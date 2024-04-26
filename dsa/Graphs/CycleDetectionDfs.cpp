@@ -30,6 +30,37 @@ bool cycleDetect(vector<vector<int>> &graph, int v) {
     return false;
 }
 
+
+//directed Graph
+bool cycle(int curr,vector<vector<int>> &adj,vector<bool> &vis,vector<bool> &inpath){
+    vis[curr]=true;
+    inpath[curr]=true;
+    for(int nbr: adj[curr]){
+        if(!vis[nbr]){
+            if(cycle(nbr,adj,vis,inpath)){
+                return true;
+            }
+        }
+        else if(vis[nbr] && inpath[nbr]){
+            return true;
+        }
+    }
+    inpath[curr]=false;
+    return false;
+}
+bool isCyclePresent(vector<vector<int>> &adj,int v){
+    vector<bool> vis(v,false);
+    vector<bool> inpath(v,false);
+    for(int i=0 ; i<v ; i++){
+        if(!vis[i]){
+           if( cycle(i,adj,vis,inpath)){
+            return true;
+           }
+        }
+    }
+    return false;
+}
+
 int main() {
 
 
@@ -56,6 +87,6 @@ int main() {
 
     //directed Graph
     vector<vector<int>> adj={{1},{2,4},{3},{},{3,5},{1}};
-    
+    cout<<isCyclePresent(adj,6);
     return 0;
 }
